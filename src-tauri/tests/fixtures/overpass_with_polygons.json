@@ -1,0 +1,20 @@
+{
+  "elements": [
+    {
+      "type": "way",
+      "id": 99999,
+      "center": { "lat": 53.0, "lon": 10.0 },
+      "tags": {
+        "industrial": "warehouse",
+        "name": "Test Warehouse"
+      }
+    },
+    {
+      "type": "node",
+      "id": 88888,
+      "lat": 0.0,
+      "lon": 0.0,
+      "tags": { "shop": "fancy", "name": "No Match" }
+    }
+  ]
+}

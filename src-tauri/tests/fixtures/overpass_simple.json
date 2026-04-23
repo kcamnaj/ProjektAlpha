@@ -1,0 +1,24 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "elements": [
+    {
+      "type": "node",
+      "id": 12345,
+      "lat": 52.3756,
+      "lon": 9.7320,
+      "tags": {
+        "name": "Müller Logistik GmbH",
+        "shop": "wholesale",
+        "wholesale": "food",
+        "addr:street": "Industriestr.",
+        "addr:housenumber": "12",
+        "addr:postcode": "30659",
+        "addr:city": "Hannover",
+        "phone": "+49 511 1234567",
+        "email": "info@mueller-test.example",
+        "website": "https://mueller-test.example"
+      }
+    }
+  ]
+}
