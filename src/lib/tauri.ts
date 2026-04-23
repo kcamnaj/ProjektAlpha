@@ -184,3 +184,50 @@ export const api = {
   listRecentActivity: (limit?: number) =>
     invoke<RecentActivityRow[]>("list_recent_activity", { limit: limit ?? 20 }),
 }
+
+// Updater API — wraps @tauri-apps/plugin-updater
+import { check, type Update } from "@tauri-apps/plugin-updater"
+import { relaunch } from "@tauri-apps/plugin-process"
+
+export type UpdaterResult =
+  | { kind: "up-to-date" }
+  | { kind: "update-available"; version: string; currentVersion: string; notes: string | null; update: Update }
+  | { kind: "error"; message: string }
+
+export async function checkForUpdate(): Promise<UpdaterResult> {
+  try {
+    const update = await check()
+    if (update === null) {
+      return { kind: "up-to-date" }
+    }
+    return {
+      kind: "update-available",
+      version: update.version,
+      currentVersion: update.currentVersion,
+      notes: update.body ?? null,
+      update,
+    }
+  } catch (e) {
+    return { kind: "error", message: String(e) }
+  }
+}
+
+export async function installUpdate(update: Update, onProgress?: (downloadedBytes: number, total: number | null) => void): Promise<void> {
+  let downloaded = 0
+  await update.downloadAndInstall((event) => {
+    switch (event.event) {
+      case "Started":
+        downloaded = 0
+        if (onProgress) onProgress(0, event.data.contentLength ?? null)
+        break
+      case "Progress":
+        downloaded += event.data.chunkLength
+        if (onProgress) onProgress(downloaded, null)
+        break
+      case "Finished":
+        break
+    }
+  })
+  // Nach Install App neu starten
+  await relaunch()
+}
